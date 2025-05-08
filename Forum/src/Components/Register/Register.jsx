@@ -57,7 +57,7 @@ export default function Register() {
     return (
         <div>
             <h2>Register</h2>
-            <label htmlFor="handle">Handle: </label>
+            <label htmlFor="handle">Username: </label>
             <input value={user.handle} onChange={updateUser('handle')} type="text" id='handle' name='handle' />
             <br /> <br />
             <label htmlFor="email">Email: </label>
