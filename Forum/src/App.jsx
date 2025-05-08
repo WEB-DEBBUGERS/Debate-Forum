@@ -18,35 +18,17 @@ function App() {
 
   const [user, loading, error] = useAuthState(auth);
 
-  if (appState.user !== user) {
-    setAppState({
-      ...appState,
-      user,
-    });
-  }
+  useEffect(() => {
+    setAppState(prev => ({
+      ...prev,
+      user
+    }));
+  }, [user]);
 
-  // useEffect(() => {
-  //   if (!user) return;
-
-  //   getUserData(appState.user.uid)
-  //   .then(data => {
-  //     const userData = data[Object.keys(data)[0]];
-  //     setAppState({
-  //       ...appState,
-  //       userData
-  //     })
-  //   }
-  //   ).catch((error) => {
-  //     console.error(error);
-  //     alert("Error fetching user data.");
-
-  //   })
-
-  // }, [user]);
   useEffect(() => {
     if (!user) return;
 
-    getUserData(appState.user.uid)
+    getUserData(user.uid)
       .then((data) => {
         if (!data || Object.keys(data).length === 0) {
           console.warn("No user data returned");
