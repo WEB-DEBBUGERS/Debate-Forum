@@ -9,7 +9,7 @@ import Authenticated from './hoc/Authenticated'
 import { useEffect, useState } from 'react';
 import { AppContext } from './state/app.context';
 import Header from './Components/Headers/Header';
-
+import Home from './views/Home/Home';
 function App() {
 
   const [appState, setAppState] = useState({
@@ -60,6 +60,7 @@ function App() {
     <AppContext.Provider value={{ ...appState, setAppState }}>
       <Header/>
       <Routes>
+        <Route path='/' element={<Home/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
       </Routes>
