@@ -1,0 +1,63 @@
+.news-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    background-color: #fff;
+    max-width: 500px;
+    transition: transform 0.2s ease;
+  }
+  
+  .news-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .news-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .news-card h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #2d3748;
+  }
+  
+  .news-card p {
+    margin-top: 8px;
+    font-size: 0.95rem;
+    color: #4a5568;
+  }
+
+  .news-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .log-in-option{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+
+
+  .login-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
