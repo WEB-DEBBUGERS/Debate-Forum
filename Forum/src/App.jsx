@@ -8,6 +8,7 @@ import { getUserData } from './services/users.service';
 import Authenticated from './hoc/Authenticated'
 import { useEffect, useState } from 'react';
 import { AppContext } from './state/app.context';
+import Header from './Components/Headers/Header';
 
 function App() {
 
@@ -57,7 +58,7 @@ function App() {
   return (
     <BrowserRouter>
     <AppContext.Provider value={{ ...appState, setAppState }}>
-      <Headers/>
+      <Header/>
       <Routes>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
