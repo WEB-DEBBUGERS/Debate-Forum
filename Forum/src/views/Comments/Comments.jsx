@@ -4,33 +4,12 @@ import React, { useState, useEffect } from "react";
 
 export default function Comments({ postId, userData }) {
     const [comments, setComments] = useState([]);
+    const [replies, setReplies] = useState([]);
     const [newComment, setNewComment] = useState('');
     const [replyTo, setReplyTo] = useState(null);
     const [replyContent, setReplyContent] = useState('');
 
-
-    const getComments = async (postId) => {
-        try {
-            const snapshot = await get(query(ref(db, 'comments'), orderByChild('postId'), equalTo(postId)));
-            return snapshot.exists() ? snapshot.val() : {};
-        } catch (error) {
-            console.error("Error fetching comments:", error);
-            return {};
-        }
-    };
-
-
-    const getReplies = async (parentCommentId) => {
-        try {
-            const snapshot = await get(query(ref(db, 'replies'), orderByChild('parentCommentId'), equalTo(parentCommentId)));
-            return snapshot.exists() ? snapshot.val() : {};
-        } catch (error) {
-            console.error("Error fetching replies:", error);
-            return {};
-        }
-    };
-
-
+    // 🟢 Функция за добавяне на коментар или реплай
     const addComment = async (postId, content, authorHandle, authorUid, parentCommentId = null) => {
         const newCommentObj = {
             postId,
@@ -47,41 +26,30 @@ export default function Comments({ postId, userData }) {
                 const commentId = commentRef.key;
                 newCommentObj.commentId = commentId;
                 await set(commentRef, newCommentObj);
-
-                setComments(prev => [...prev, newCommentObj]);
-            }
-            else {
+            } else {
                 const replyRef = push(ref(db, 'replies'));
                 const replyId = replyRef.key;
                 newCommentObj.commentId = replyId;
                 await set(replyRef, newCommentObj);
-
-                setComments(prev => [...prev, newCommentObj]);
             }
         } catch (error) {
             console.error("Error adding comment:", error);
         }
     };
 
-
+    // 🟢 Зареждане на коментари и реплайове
     useEffect(() => {
         const commentsQuery = query(ref(db, 'comments'), orderByChild('postId'), equalTo(postId));
-        const repliesQuery = query(ref(db, 'replies'));
+        const repliesQuery = query(ref(db, 'replies'), orderByChild('postId'), equalTo(postId));
 
         const unsubscribeComments = onValue(commentsQuery, (snapshot) => {
             const fetchedComments = snapshot.exists() ? Object.values(snapshot.val()) : [];
-            setComments(prev => [
-                ...fetchedComments,
-                ...prev.filter(c => c.parentCommentId)
-            ]);
+            setComments(fetchedComments);
         });
 
         const unsubscribeReplies = onValue(repliesQuery, (snapshot) => {
             const fetchedReplies = snapshot.exists() ? Object.values(snapshot.val()) : [];
-            setComments(prev => [
-                ...prev.filter(c => !c.parentCommentId),
-                ...fetchedReplies
-            ]);
+            setReplies(fetchedReplies);
         });
 
         return () => {
@@ -90,7 +58,6 @@ export default function Comments({ postId, userData }) {
         };
     }, [postId]);
 
-
     const handleCommentSubmit = (e) => {
         e.preventDefault();
         if (newComment.trim() !== '') {
@@ -98,7 +65,6 @@ export default function Comments({ postId, userData }) {
             setNewComment('');
         }
     };
-
 
     const handleReplySubmit = (e, parentCommentId) => {
         e.preventDefault();
@@ -122,42 +88,38 @@ export default function Comments({ postId, userData }) {
             </form>
 
             <div>
-                {comments
-                    .filter(comment => comment.parentCommentId === null)
-                    .map(comment => (
-                        <div key={comment.commentId} style={{ marginBottom: '20px' }}>
-                            <p>{comment.content}</p>
-                            <small>By {comment.authorHandle} on {comment.createdOn}</small>
+                {comments.map(comment => (
+                    <div key={comment.commentId} style={{ marginBottom: '20px' }}>
+                        <p>{comment.content}</p>
+                        <small>By {comment.authorHandle} on {comment.createdOn}</small>
 
-                            <button onClick={() => setReplyTo(comment.commentId)}>
-                                {replyTo === comment.commentId ? 'Cancel Reply' : 'Reply'}
-                            </button>
+                        <button onClick={() => setReplyTo(replyTo === comment.commentId ? null : comment.commentId)}>
+                            {replyTo === comment.commentId ? 'Cancel Reply' : 'Reply'}
+                        </button>
 
-                            {replyTo === comment.commentId && (
-                                <form onSubmit={(e) => handleReplySubmit(e, comment.commentId)}>
-                                    <textarea
-                                        value={replyContent}
-                                        onChange={(e) => setReplyContent(e.target.value)}
-                                        placeholder="Write a reply..."
-                                    />
-                                    <button type="submit">Add Reply</button>
-                                </form>
-                            )}
+                        {replyTo === comment.commentId && (
+                            <form onSubmit={(e) => handleReplySubmit(e, comment.commentId)}>
+                                <textarea
+                                    value={replyContent}
+                                    onChange={(e) => setReplyContent(e.target.value)}
+                                    placeholder="Write a reply..."
+                                />
+                                <button type="submit">Add Reply</button>
+                            </form>
+                        )}
 
-                            {comments
-                                .filter(reply => reply.parentCommentId === comment.commentId)
-                                .map(reply => (
-                                    <div key={reply.commentId} style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px', marginTop: '10px' }}>
-                                        <p>{reply.content}</p>
-                                        <small>Reply by {reply.authorHandle} on {reply.createdOn}</small>
-                                    </div>
-                                ))}
-                        </div>
-                    ))}
+                        {/* 🟢 Визуализирай реплайовете само от масива replies */}
+                        {replies
+                            .filter(reply => reply.parentCommentId === comment.commentId)
+                            .map(reply => (
+                                <div key={reply.commentId} style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px', marginTop: '10px' }}>
+                                    <p>{reply.content}</p>
+                                    <small>Reply by {reply.authorHandle} on {reply.createdOn}</small>
+                                </div>
+                            ))}
+                    </div>
+                ))}
             </div>
         </div>
     );
 }
-
-
-
