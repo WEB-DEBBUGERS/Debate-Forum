@@ -1,13 +1,15 @@
 import { push, ref, set, get, query, orderByChild, equalTo } from "firebase/database";
 import { useState, useEffect, useContext } from "react";
-import { db } from "../../config/firebase-config";
+import { db } from '../../config/firebase-config';
 import { AppContext } from "../../state/app.context";
-import CreatePostForm from "./Components Post/CreatePost";
+import Comments from "../../views/Comments/Comments";
 import PostItem from "./Components Post/PostList";
+import CreatePostForm from "./Components Post/CreatePost";
 
 export default function Posts() {
     const { userData } = useContext(AppContext);
     const [userPosts, setUserPosts] = useState([]);
+    const [visibleComments, setVisibleComments] = useState({});
 
     const [newPost, setNewPost] = useState({
         title: '',
@@ -20,14 +22,14 @@ export default function Posts() {
 
             if (!snapshot.exists()) {
                 console.log("No posts found");
-                return {}; 
+                return {};
             }
 
             console.log("Posts found:", snapshot.val());
             return snapshot.val();
         } catch (error) {
             console.error("Error fetching posts:", error);
-            return {}; 
+            return {};
         }
     };
 
@@ -36,7 +38,7 @@ export default function Posts() {
             const newPostRef = push(ref(db, 'posts'));
             const post = {
                 title,
-                content,    
+                content,
                 authorHandle,
                 authorUid,
                 createdOn: new Date().toString(),
@@ -63,34 +65,63 @@ export default function Posts() {
         e.preventDefault();
         if (newPost.title && newPost.content) {
             createPost(newPost.title, newPost.content, userData.handle, userData.uid);
-            setNewPost({ title: '', content: '' }); 
+            setNewPost({ title: '', content: '' });
         }
     };
 
     useEffect(() => {
         const fetchPosts = async () => {
-            if (!userData || !userData.uid) return; 
+            if (!userData || !userData.uid) return;
 
             const posts = await getUserPosts(userData.uid);
-            setUserPosts(posts); 
+            setUserPosts(posts);
         };
 
         fetchPosts();
-    }, [userData]); 
+    }, [userData]);
 
     return (
         <div>
-            {userData && 
-                <CreatePostForm title={newPost.title} handleChange={handleChange} content={newPost.content} handleSubmit={handleSubmit}/>
-            }
+            <h1>Posts</h1>
+
+            {userData && (
+                <CreatePostForm
+                    title={newPost.title}
+                    content={newPost.content}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                />
+            )}
 
             {userPosts && Object.entries(userPosts).length > 0 ? (
                 Object.entries(userPosts).map(([postId, post]) => (
-                   <PostItem key={postId} id={postId} title={post.title} content={post.content} authorHandle={post.authorHandle} createdOn={post.createdOn}/>
+                    <div key={postId}>
+                        <PostItem
+                            id={postId}
+                            title={post.title}
+                            content={post.content}
+                            authorHandle={post.authorHandle}
+                            createdOn={post.createdOn}
+                        />
+
+                        <button onClick={() => setVisibleComments(prev => ({
+                            ...prev,
+                            [postId]: !prev[postId]
+                        }))}>
+                            {visibleComments[postId] ? 'Hide Comments' : 'Show Comments'}
+                        </button>
+
+                        {visibleComments[postId] && (
+                            <div style={{ border: '1px solid gray', padding: '10px', marginTop: '10px' }}>
+                                <Comments postId={postId} userData={userData} />
+                            </div>
+                        )}
+                    </div>
                 ))
             ) : (
                 <p>No posts yet.</p>
             )}
         </div>
     );
+
 }
