@@ -9,7 +9,7 @@ export default function Comments({ postId, userData }) {
     const [replyTo, setReplyTo] = useState(null);
     const [replyContent, setReplyContent] = useState('');
 
-    // 🟢 Функция за добавяне на коментар или реплай
+    
     const addComment = async (postId, content, authorHandle, authorUid, parentCommentId = null) => {
         const newCommentObj = {
             postId,
@@ -37,7 +37,7 @@ export default function Comments({ postId, userData }) {
         }
     };
 
-    // 🟢 Зареждане на коментари и реплайове
+   
     useEffect(() => {
         const commentsQuery = query(ref(db, 'comments'), orderByChild('postId'), equalTo(postId));
         const repliesQuery = query(ref(db, 'replies'), orderByChild('postId'), equalTo(postId));
@@ -108,7 +108,7 @@ export default function Comments({ postId, userData }) {
                             </form>
                         )}
 
-                        {/* 🟢 Визуализирай реплайовете само от масива replies */}
+                     
                         {replies
                             .filter(reply => reply.parentCommentId === comment.commentId)
                             .map(reply => (
