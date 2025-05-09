@@ -1,7 +1,6 @@
 import { Box, Flex, Link, Spacer, Button } from "@chakra-ui/react";
 
 
-
 function Navbar() {
   return (
     <Flex
@@ -12,19 +11,19 @@ function Navbar() {
       align="center"
     >
       <Box fontWeight="bold" fontSize="xl">
-        MyApp
+        THE BEST DEBATE FORUM
       </Box>
 
       <Spacer />
 
       <Flex gap="1rem">
-        <Link to="/" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+        <Link href="/" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
           Home
         </Link>
-        <Link to="/login" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+        <Link href="/login" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
           Login
         </Link>
-        <Link to="/register" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+        <Link href="/register" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
           Register
         </Link>
       </Flex>

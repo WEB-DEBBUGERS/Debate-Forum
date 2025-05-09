@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { AppContext } from '../../state/app.context';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { loginUser } from '../../services/auth.service';
+import { loginUser } from '../../services/auth.service'
+import Navbar from '../../NavBar/Navbar';
  
 export default function Login() {
  
@@ -45,6 +46,7 @@ export default function Login() {
  
     return (
         <div>
+            <Navbar/>
             <h2>Login</h2>
             <label htmlFor="email">Email: </label>
             <input value={user.email} onChange={updateUser('email')} type="email" id='email' name='email' />

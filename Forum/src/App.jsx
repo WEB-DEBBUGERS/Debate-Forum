@@ -11,6 +11,7 @@ import { AppContext } from "./state/app.context";
 import Header from "./Components/Headers/Header";
 import Home from "./views/Home/Home";
 
+
 function App() {
   const [appState, setAppState] = useState({
     user: null,
@@ -60,7 +61,7 @@ function App() {
   return (
     <BrowserRouter>
       <AppContext.Provider value={{ ...appState, setAppState }}>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

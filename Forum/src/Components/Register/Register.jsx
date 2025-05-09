@@ -3,7 +3,8 @@ import { AppContext } from '../../state/app.context';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../services/auth.service';
 import { createUserHandle , getUserByHandle } from '../../services/users.service';
- 
+import Navbar from '../../NavBar/Navbar';
+
 export default function Register() {
  
     const [user, setUser] = useState({
@@ -56,6 +57,7 @@ export default function Register() {
  
     return (
         <div>
+            <Navbar/>
             <h2>Register</h2>
             <label htmlFor="handle">Username: </label>
             <input value={user.handle} onChange={updateUser('handle')} type="text" id='handle' name='handle' />
