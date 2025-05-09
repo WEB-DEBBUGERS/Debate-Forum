@@ -18,7 +18,6 @@ export default function Home() {
           <NewsFeed />
         ) : (
           <>
-          <h1>Here will be the logged in user component Home page</h1>
           <Posts/>
           </>
         )}

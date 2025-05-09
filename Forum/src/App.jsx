@@ -8,7 +8,7 @@ import { getUserData } from "./services/users.service";
 import Authenticated from "./hoc/Authenticated";
 import { useEffect, useState } from "react";
 import { AppContext } from "./state/app.context";
-import Header from "./Components/Headers/Header";
+// import Header from "./Components/Headers/Header";
 import Home from "./views/Home/Home";
 
 

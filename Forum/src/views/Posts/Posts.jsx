@@ -2,6 +2,8 @@ import { push, ref, set, get, query, orderByChild, equalTo } from "firebase/data
 import { useState, useEffect, useContext } from "react";
 import { db } from "../../config/firebase-config";
 import { AppContext } from "../../state/app.context";
+import CreatePostForm from "./Components Post/CreatePost";
+import PostItem from "./Components Post/PostList";
 
 export default function Posts() {
     const { userData } = useContext(AppContext);
@@ -34,7 +36,7 @@ export default function Posts() {
             const newPostRef = push(ref(db, 'posts'));
             const post = {
                 title,
-                content,
+                content,    
                 authorHandle,
                 authorUid,
                 createdOn: new Date().toString(),
@@ -78,43 +80,13 @@ export default function Posts() {
 
     return (
         <div>
-            <h1>Posts</h1>
-            
-        
-            {userData && (
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Title:</label>
-                        <input 
-                            type="text" 
-                            name="title" 
-                            value={newPost.title} 
-                            onChange={handleChange} 
-                            placeholder="Enter post title" 
-                            required 
-                        />
-                    </div>
-                    <div>
-                        <label>Content:</label>
-                        <textarea 
-                            name="content" 
-                            value={newPost.content} 
-                            onChange={handleChange} 
-                            placeholder="Enter post content" 
-                            required 
-                        />
-                    </div>
-                    <button type="submit">Create Post</button>
-                </form>
-            )}
+            {userData && 
+                <CreatePostForm title={newPost.title} handleChange={handleChange} content={newPost.content} handleSubmit={handleSubmit}/>
+            }
 
             {userPosts && Object.entries(userPosts).length > 0 ? (
                 Object.entries(userPosts).map(([postId, post]) => (
-                    <div key={postId}>
-                        <h2>{post.title}</h2>
-                        <p>{post.content}</p>
-                        <small>By {post.authorHandle} on {post.createdOn}</small>
-                    </div>
+                   <PostItem key={postId} id={postId} title={post.title} content={post.content} authorHandle={post.authorHandle} createdOn={post.createdOn}/>
                 ))
             ) : (
                 <p>No posts yet.</p>
