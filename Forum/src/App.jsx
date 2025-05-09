@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { AppContext } from "./state/app.context";
 import Header from "./Components/Headers/Header";
 import Home from "./views/Home/Home";
+
 function App() {
   const [appState, setAppState] = useState({
     user: null,
@@ -19,9 +20,9 @@ function App() {
   const [user, loading, error] = useAuthState(auth);
 
   useEffect(() => {
-    setAppState(prev => ({
+    setAppState((prev) => ({
       ...prev,
-      user
+      user,
     }));
   }, [user]);
 
