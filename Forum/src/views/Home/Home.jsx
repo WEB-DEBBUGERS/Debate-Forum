@@ -1,15 +1,16 @@
 import NewsFeed from "./News/NewsFeed";
 import { useContext } from "react";
 import { AppContext } from "../../state/app.context";
-import Demo from "../../Components/Demo/Demo";
+import Navbar from "../../NavBar/Navbar";
+
 export default function Home() {
   const { user } = useContext(AppContext);
 
   return (
     <>
-      <div>
-        <Demo></Demo>
-      </div>
+    <div>
+      <Navbar></Navbar>
+    </div>
       <div className="home">
         {!user ? (
           <NewsFeed />

@@ -1,5 +1,6 @@
 import './News.css'
 import { Link } from 'react-router-dom';
+import { Button, HStack } from "@chakra-ui/react";
 
 function NewsCard({ title, summary, imageUrl }) {
     return (
@@ -13,7 +14,9 @@ function NewsCard({ title, summary, imageUrl }) {
         <div className='log-in-option'>
             <p style={{fontWeight: 700}}>Discuss With Our Community</p>
         <Link to="/login">
-        <button className='login-button'>Login</button>
+        <HStack>
+          <Button>Login</Button>
+        </HStack>
         </Link>
         </div>
       </div>
