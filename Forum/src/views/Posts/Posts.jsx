@@ -5,7 +5,7 @@ import { AppContext } from "../../state/app.context";
 import Comments from "../../views/Comments/Comments";
 import PostItem from "./Components Post/PostList";
 import CreatePostForm from "./Components Post/CreatePost";
-
+import { getUserData } from "../../services/users.service";
 export default function Posts() {
     const { userData } = useContext(AppContext);
     const [userPosts, setUserPosts] = useState([]);
@@ -34,6 +34,15 @@ export default function Posts() {
     };
 
     const createPost = async (title, content, authorHandle, authorUid) => {
+
+        const userData = await getUserData(authorUid);
+        const user = Object.values(userData)[0]; 
+
+        if (user?.isBlocked) {
+            throw new Error("You are blocked from posting.");
+        }
+
+
         try {
             const newPostRef = push(ref(db, 'posts'));
             const post = {
