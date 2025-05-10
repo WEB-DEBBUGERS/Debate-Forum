@@ -1,5 +1,5 @@
-import {ref, remove, get, update} from 'firebase/database';
-import {db } from '../config/firebase-config.js';
+import { ref, remove, get, update } from 'firebase/database';
+import { db } from '../config/firebase-config.js';
 
 export const getAllPosts = async () => {
 
@@ -9,8 +9,8 @@ export const getAllPosts = async () => {
 
 
 export const deletePost = async (postId) => {
-  const postRef = ref(db, `posts/${postId}`);
-  return remove(postRef);
+    const postRef = ref(db, `posts/${postId}`);
+    return remove(postRef);
 }
 
 
@@ -21,11 +21,11 @@ export const getAllUsers = async () => {
 
 
 export const blockUser = async (uid) => {
-    await update(ref(db, `users/${uid}`), {isBlocked: true});
+    await update(ref(db, `users/${uid}`), { isBlocked: true });
 }
 
-export const  unblockUser = async (uid) => {
-    await update(ref(db, `users/${uid}`), {isBlocked: false});
+export const unblockUser = async (uid) => {
+    await update(ref(db, `users/${uid}`), { isBlocked: false });
 }
 
 
