@@ -22,7 +22,7 @@ function NewsCard({ title, summary, imageUrl }) {
             <p style={{fontWeight: 700}}>Discuss With Our Community</p>
         <Link to="/login">
         <HStack>
-          <Button>Login</Button>
+          <Button style={{ backgroundColor: '#929292' , padding: '15px'}}>Login</Button>
         </HStack>
         </Link>
         </div> :

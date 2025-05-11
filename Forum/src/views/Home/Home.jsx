@@ -6,19 +6,32 @@ import { useNavigate } from "react-router-dom";
 import Posts from "../Posts/Posts";
 import { Grid, Box } from "@chakra-ui/react";
 
-
 export default function Home() {
   const { user, userData } = useContext(AppContext);
   const navigate = useNavigate();
 
   return (
     <>
-      <div>
+      <Box>
         <Navbar />
-      </div>
-      <div className="home">
+      </Box>
+      <Box
+        marginTop="20px"
+        borderWidth="1px"
+        borderRadius="md"
+        p={4}
+        bg="gray.50"
+        boxShadow="sm"
+        _hover={{ boxShadow: "md", bg: "white" }}
+        mb={4}
+        maxH="100vh"
+        overflowY="auto"
+      >
         {!user ? (
+          <>
           <NewsFeed />
+          <Posts/>
+          </>
         ) : (
           <>
             {userData?.isAdmin && (
@@ -26,15 +39,15 @@ export default function Home() {
             )}
             <Grid templateColumns="1fr 1fr" gap={4}>
               <Box>
-                <Posts/>
+                <Posts />
               </Box>
               <Box>
-                <NewsFeed/>
+                <NewsFeed />
               </Box>
             </Grid>
           </>
         )}
-      </div>
+      </Box>
     </>
   );
 }
