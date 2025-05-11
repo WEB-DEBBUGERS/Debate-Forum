@@ -3,13 +3,15 @@ import { useState, useEffect, useContext } from "react";
 import { db } from '../../config/firebase-config';
 import { AppContext } from "../../state/app.context";
 import Comments from "../../views/Comments/Comments";
-import PostItem from "./Components Post/PostList";
+import PostList from "./Components Post/PostList";
 import CreatePostForm from "./Components Post/CreatePost";
 import { getUserData } from "../../services/users.service";
+import moment from 'moment';
+
 export default function Posts() {
     const { userData } = useContext(AppContext);
     const [userPosts, setUserPosts] = useState([]);
-    const [visibleComments, setVisibleComments] = useState({});
+
 
     const [newPost, setNewPost] = useState({
         title: '',
@@ -50,7 +52,7 @@ export default function Posts() {
                 content,
                 authorHandle,
                 authorUid,
-                createdOn: new Date().toString(),
+                createdOn: moment().format("MMMM Do YYYY, h:mm a"),
             };
 
             await set(newPostRef, post);
@@ -91,7 +93,6 @@ export default function Posts() {
 
     return (
         <div>
-            <h1>Posts</h1>
 
             {userData && (
                 <CreatePostForm
@@ -105,26 +106,13 @@ export default function Posts() {
             {userPosts && Object.entries(userPosts).length > 0 ? (
                 Object.entries(userPosts).map(([postId, post]) => (
                     <div key={postId}>
-                        <PostItem
+                        <PostList
                             id={postId}
                             title={post.title}
                             content={post.content}
                             authorHandle={post.authorHandle}
                             createdOn={post.createdOn}
                         />
-
-                        <button onClick={() => setVisibleComments(prev => ({
-                            ...prev,
-                            [postId]: !prev[postId]
-                        }))}>
-                            {visibleComments[postId] ? 'Hide Comments' : 'Show Comments'}
-                        </button>
-
-                        {visibleComments[postId] && (
-                            <div style={{ border: '1px solid gray', padding: '10px', marginTop: '10px' }}>
-                                <Comments postId={postId} userData={userData} />
-                            </div>
-                        )}
                     </div>
                 ))
             ) : (

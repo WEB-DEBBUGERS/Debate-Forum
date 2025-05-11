@@ -1,6 +1,7 @@
 import { db } from '../../config/firebase-config';
-import { ref, get, query, orderByChild, equalTo, push, set, onValue } from "firebase/database";
-import React, { useState, useEffect } from "react";
+import { ref, query, orderByChild, equalTo, push, set, onValue } from "firebase/database";
+import { useState, useEffect } from "react";
+import moment from 'moment';
 
 export default function Comments({ postId, userData }) {
     const [comments, setComments] = useState([]);
@@ -16,7 +17,7 @@ export default function Comments({ postId, userData }) {
             content,
             authorHandle,
             authorUid,
-            createdOn: new Date().toString(),
+            createdOn: moment().format("MMMM Do YYYY, h:mm a"),
             parentCommentId,
         };
 
@@ -77,24 +78,24 @@ export default function Comments({ postId, userData }) {
 
     return (
         <div>
-            <h3>Comments</h3>
             <form onSubmit={handleCommentSubmit}>
                 <textarea
+                style={{color: 'white'}}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Write a comment..."
                 />
-                <button type="submit">Add Comment</button>
+                <button type="submit" style={{color: 'black' , fontSize: '15px'}}>💬</button>
             </form>
 
             <div>
                 {comments.map(comment => (
-                    <div key={comment.commentId} style={{ marginBottom: '20px' }}>
+                    <div key={comment.commentId} style={{ marginBottom: '20px' ,color: 'black'}}>
                         <p>{comment.content}</p>
                         <small>By {comment.authorHandle} on {comment.createdOn}</small>
 
                         <button onClick={() => setReplyTo(replyTo === comment.commentId ? null : comment.commentId)}>
-                            {replyTo === comment.commentId ? 'Cancel Reply' : 'Reply'}
+                            {replyTo === comment.commentId ? 'Cancel' : '↩️'}
                         </button>
 
                         {replyTo === comment.commentId && (
