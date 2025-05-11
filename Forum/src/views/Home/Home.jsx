@@ -1,11 +1,11 @@
-import NewsFeed from "./News/NewsFeed";
+import NewsFeed from "../News/NewsFeed";
 import { useContext } from "react";
 import { AppContext } from "../../state/app.context";
 import Navbar from "../../NavBar/Navbar";
 import { useNavigate } from "react-router-dom";
 import Posts from "../Posts/Posts";
-import TrendingNewsPosts from "../Posts/Components Post/TrendingNewsPosts";
 import { Grid, Box } from "@chakra-ui/react";
+
 
 export default function Home() {
   const { user, userData } = useContext(AppContext);
@@ -26,10 +26,10 @@ export default function Home() {
             )}
             <Grid templateColumns="1fr 1fr" gap={4}>
               <Box>
-                <Posts />
+                <Posts/>
               </Box>
               <Box>
-                <TrendingNewsPosts />
+                <NewsFeed/>
               </Box>
             </Grid>
           </>

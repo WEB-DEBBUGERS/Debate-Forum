@@ -5,14 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/auth.service";
 
 function Navbar() {
-  const { user,  setAppState } = useContext(AppContext);
+  const { user, setAppState } = useContext(AppContext);
   const navigate = useNavigate();
 
   const logout = () => {
     logoutUser()
       .then(() => {
         setAppState({ user: null, userData: null });
-        navigate('/');
+        navigate("/");
       })
       .catch((error) => {
         console.error("Logout failed:", error);
@@ -20,13 +20,7 @@ function Navbar() {
   };
 
   return (
-    <Flex
-      as="nav"
-      bg="gray.800"
-      color="white"
-      padding="1.5rem"
-      align="center"
-    >
+    <Flex as="nav" bg="gray.800" color="white" padding="1.5rem" align="center">
       <Box fontWeight="bold" fontSize="xl">
         THE BEST DEBATE FORUM
       </Box>
@@ -34,23 +28,41 @@ function Navbar() {
       <Spacer />
 
       <Flex gap="1rem">
-        <Link href="/" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+        <Link href="/" _hover={{ textDecoration: "none", color: "teal.300" }}>
           Home
         </Link>
         {!user && (
           <>
-            <Link href="/login" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+            <Link
+              href="/login"
+              _hover={{ textDecoration: "none", color: "teal.300" }}
+            >
               Login
             </Link>
-            <Link href="/register" _hover={{ textDecoration: 'none', color: 'teal.300' }}>
+            <Link
+              href="/register"
+              _hover={{ textDecoration: "none", color: "teal.300" }}
+            >
               Register
             </Link>
           </>
         )}
         {user && (
-          <Button variant="link" onClick={logout} _hover={{ color: 'teal.300' }}>
-            Logout
-          </Button>
+          <>
+            <Link
+              href="/create-post"
+              _hover={{ textDecoration: "none", color: "teal.300" }}
+            >
+              Create Post
+            </Link>
+            <Button
+              variant="link"
+              onClick={logout}
+              _hover={{ color: "teal.300" }}
+            >
+              Logout
+            </Button>
+          </>
         )}
       </Flex>
     </Flex>

@@ -5,12 +5,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase-config";
 import { getUserData } from "./services/users.service";
-import Authenticated from "./hoc/Authenticated";
+import Authenticated from "./Authenticated/Authenticated";
 import { useEffect, useState } from "react";
 import { AppContext } from "./state/app.context";
 import Home from "./views/Home/Home";
 import { Admin } from './Admin/Admin';
 import { getAdminData } from "./Admin/Admins";
+import CreatePostPage from "./views/Posts/Components Post/CreatePostPage";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -72,6 +73,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path='/admin' element={<Authenticated><Admin /></Authenticated>} />
+          <Route path='/create-post' element={<CreatePostPage/>}/>
         </Routes>
       </AppContext.Provider>
     </BrowserRouter>

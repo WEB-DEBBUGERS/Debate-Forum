@@ -2,7 +2,8 @@ import './News.css'
 import { Link } from 'react-router-dom';
 import { Button, HStack } from "@chakra-ui/react";
 import { useContext } from 'react';
-import { AppContext } from '../../../state/app.context';
+import { AppContext } from '../../state/app.context';
+
 
 function NewsCard({ title, summary, imageUrl }) {
 
@@ -25,7 +26,11 @@ function NewsCard({ title, summary, imageUrl }) {
         </HStack>
         </Link>
         </div> :
-        null
+        <div className='create-post-option'>
+        <Link to='/create-post'>
+          <Button style={{textDecoration: "underline"}}>Share Your Opinion Here</Button>
+        </Link>
+        </div>
         }
       </div>
     );

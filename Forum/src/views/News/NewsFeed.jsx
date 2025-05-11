@@ -1,5 +1,5 @@
 import NewsCard from "./NewsCard";
-import { NEWS_URL } from "../../../helpers/api-config";
+import { NEWS_URL } from "../../config/api-config";
 import { useState, useEffect } from "react";
 import './News.css'
 

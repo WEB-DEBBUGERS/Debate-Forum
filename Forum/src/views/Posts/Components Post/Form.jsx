@@ -7,7 +7,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 
-function CreatePostForm({ handleChange, title, content, handleSubmit }) {
+function Form({ handleChange, title, content, handleSubmit }) {
   return (
     <Box
       as="form" 
@@ -48,4 +48,4 @@ function CreatePostForm({ handleChange, title, content, handleSubmit }) {
   );
 }
 
-export default CreatePostForm;
+export default Form;

@@ -62,3 +62,8 @@
   .login-button:hover {
     background-color: #0056b3;
   }
+
+  .create-post-option{
+    margin-top: auto;
+    font-weight: 700;
+  }
