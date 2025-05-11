@@ -10,7 +10,7 @@ function NewsCard({ title, summary, imageUrl }) {
   const {user} = useContext(AppContext)
 
     return (
-      <div className="news-card">
+      <div className="news-card" style={{border: '1px solid black'}}>
         <img
           src={imageUrl}
           alt={title}

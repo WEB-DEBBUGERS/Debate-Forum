@@ -11,7 +11,8 @@ function PostList({ posts }) {
     <>
       {Object.entries(posts).map(([postId, post]) => (
         <Box
-        marginTop="20px"
+          marginLeft={"20px"}
+          marginTop="20px"
           key={postId}
           borderWidth="1px"
           borderRadius="md"
@@ -43,11 +44,7 @@ function PostList({ posts }) {
           </button>
 
           {visibleComments[postId] && (
-            <Box
-              border="1px solid gray"
-              padding="10px"
-              marginTop="10px"
-            >
+            <Box border="1px solid transparent" padding="10px" marginTop="10px">
               <Comments postId={postId} userData={userData} />
             </Box>
           )}
