@@ -1,4 +1,4 @@
-import { get, ref, query, orderByChild, equalTo,getDatabase,set } from 'firebase/database';
+import { get, ref } from 'firebase/database';
 import { db } from '../config/firebase-config.js';
 
 export const getAdminData = async (uid) => {

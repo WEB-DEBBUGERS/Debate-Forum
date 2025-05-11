@@ -3,16 +3,16 @@ import PostList from "./Components Post/PostList";
 import { getAllPosts } from "../../services/posts.service";
 
 export default function Posts() {
-  const [userPosts, setUserPosts] = useState([]);
+    const [userPosts, setUserPosts] = useState([]);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const posts = await getAllPosts();
-      setUserPosts(posts);
-    };
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const posts = await getAllPosts();
+            setUserPosts(posts);
+        };
 
-    fetchPosts();
-  }, []);
+        fetchPosts();
+    }, []);
 
-  return <div>{userPosts && <PostList posts={userPosts} />}</div>;
+    return <div>{userPosts && <PostList posts={userPosts} />}</div>;
 }

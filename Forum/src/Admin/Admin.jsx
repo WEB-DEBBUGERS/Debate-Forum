@@ -49,10 +49,10 @@ export const Admin = () => {
 
     const deletePostAndRelatedData = async (postId) => {
         try {
-            
+
             await deletePost(postId);
 
-            
+
             const commentsSnap = await get(child(ref(db), 'comments'));
             if (commentsSnap.exists()) {
                 const comments = commentsSnap.val();
@@ -63,7 +63,7 @@ export const Admin = () => {
                 }
             }
 
-          
+
             const repliesSnap = await get(child(ref(db), 'replies'));
             if (repliesSnap.exists()) {
                 const replies = repliesSnap.val();
@@ -74,7 +74,7 @@ export const Admin = () => {
                 }
             }
 
-          
+
             setPosts((prevPosts) => prevPosts.filter(([id]) => id !== postId));
             alert("Post and related data deleted successfully.");
         } catch (error) {
@@ -121,7 +121,7 @@ export const Admin = () => {
         <div>
             <Navbar />
             <div className="admin-wrapper">
-                <h2 className="admin-title">Admin Panel</h2>
+                <h2 className="admin-title">Administration Hub</h2>
                 <p>Welcome {userData.adminDetails?.firstName} {userData.adminDetails?.lastName}</p>
 
                 <h3>All Users</h3>
