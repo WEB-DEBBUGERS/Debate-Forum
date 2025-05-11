@@ -21,8 +21,8 @@ function Navbar() {
 
   return (
     <Flex as="nav" bg="gray.800" color="white" padding="1.5rem" align="center">
-      <Box fontWeight="bold" fontSize="xl">
-        THE BEST DEBATE FORUM
+      <Box fontWeight="bold" fontSize="4xl" fontFamily="'Bebas Neue', sans-serif" >
+        DEBATABLE
       </Box>
 
       <Spacer />

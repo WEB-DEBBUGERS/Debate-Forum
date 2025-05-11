@@ -14,5 +14,5 @@ export default function Posts() {
         fetchPosts();
     }, []);
 
-    return <div>{userPosts && <PostList posts={userPosts} />}</div>;
+    return <div>{userPosts && <PostList style={{backgroundColor: '#FFF9E6'}} posts={userPosts} />}</div>;
 }

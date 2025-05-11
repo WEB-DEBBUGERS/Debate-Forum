@@ -17,10 +17,10 @@ function PostList({ posts }) {
           borderWidth="1px"
           borderRadius="md"
           p={4}
-          bg="gray.50"
           boxShadow="sm"
-          _hover={{ boxShadow: "md", bg: "white" }}
+          _hover={{ boxShadow: "md" }}
           mb={4}
+          bg="#FFF9E6" 
         >
           <Heading color="black" size="md" mb={2}>
             {post.title}
