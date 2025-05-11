@@ -36,7 +36,7 @@ export default function Home() {
         ) : (
           <>
             {userData?.isAdmin && (
-              <button onClick={() => navigate("/admin")} style={{ color: 'black',  backgroundColor: '#d3d3d3', // светло сиво
+              <button onClick={() => navigate("/admin")} style={{ color: 'black',  backgroundColor: '#fff9c4', 
                 padding: '8px 16px',
                 border: 'none',
                 borderRadius: '4px',
