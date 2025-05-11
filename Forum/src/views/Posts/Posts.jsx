@@ -41,7 +41,7 @@ export default function Posts() {
         const user = Object.values(userData)[0]; 
 
         if (user?.isBlocked) {
-            throw new Error("You are blocked from posting.");
+            return alert("You are blocked and cannot create posts.");   
         }
 
 

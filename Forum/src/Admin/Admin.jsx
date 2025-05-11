@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { AppContext } from "../state/app.context";
 import { getAllPosts, deletePost, getAllUsers, blockUser, unblockUser } from "../services/admin.service";
 import Navbar from "../NavBar/Navbar";
+import { ref, remove, get, child } from "firebase/database";
 import "./AdminPanel.css";
+import { db } from "../config/firebase-config";
 
 
 export const Admin = () => {
-    const { user ,userData } = useContext(AppContext);
+    const { user, userData } = useContext(AppContext);
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([]);
     const [searchQueryUsers, setSearchQueryUsers] = useState("");
@@ -45,13 +47,38 @@ export const Admin = () => {
         fetchPosts();
     }, []);
 
-    const handleDelete = async (postId) => {
-        
+    const deletePostAndRelatedData = async (postId) => {
         try {
-            await deletePost(user.postId);
+            
+            await deletePost(postId);
+
+            
+            const commentsSnap = await get(child(ref(db), 'comments'));
+            if (commentsSnap.exists()) {
+                const comments = commentsSnap.val();
+                for (const [commentId, comment] of Object.entries(comments)) {
+                    if (comment.postId === postId) {
+                        await remove(ref(db, `comments/${commentId}`));
+                    }
+                }
+            }
+
+          
+            const repliesSnap = await get(child(ref(db), 'replies'));
+            if (repliesSnap.exists()) {
+                const replies = repliesSnap.val();
+                for (const [replyId, reply] of Object.entries(replies)) {
+                    if (reply.postId === postId) {
+                        await remove(ref(db, `replies/${replyId}`));
+                    }
+                }
+            }
+
+          
             setPosts((prevPosts) => prevPosts.filter(([id]) => id !== postId));
+            alert("Post and related data deleted successfully.");
         } catch (error) {
-            console.error("Error deleting post: ", error);
+            console.error("Error deleting post and related data: ", error);
         }
     };
 
@@ -132,7 +159,7 @@ export const Admin = () => {
                     {sortedPosts.map(([id, post]) => (
                         <li key={id}>
                             <strong>{post.title}</strong> by {post.authorHandle}
-                            <button onClick={() => handleDelete(id)}>Delete</button>
+                            <button onClick={() => deletePostAndRelatedData(id)}>Delete</button>
                         </li>
                     ))}
                 </ul>

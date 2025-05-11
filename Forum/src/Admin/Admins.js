@@ -15,14 +15,3 @@ export const getAdminData = async (uid) => {
   
 
 
-
- export const addAdminToDatabase = (uid, email) => {
-  const db = getDatabase();
-  const userRef = ref(db, 'admins/' + uid);
-  return set(userRef, {
-    email: email,
-    isAdmin: true,
-    uid: uid,
-  });
-};
-
