@@ -26,17 +26,23 @@ export default function Home() {
         mb={4}
         maxH="100vh"
         overflowY="auto"
-        
+
       >
         {!user ? (
           <>
-          <NewsFeed />
-          <Posts/>
+            <NewsFeed />
+            <Posts />
           </>
         ) : (
           <>
             {userData?.isAdmin && (
-              <button onClick={() => navigate("/admin")}>Admin Panel</button>
+              <button onClick={() => navigate("/admin")} style={{ color: 'black',  backgroundColor: '#d3d3d3', // светло сиво
+                padding: '8px 16px',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer' }}>
+                Admin Panel
+              </button>
             )}
             <Grid templateColumns="1fr 1fr" gap={4}>
               <Box>
