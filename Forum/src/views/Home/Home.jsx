@@ -26,6 +26,7 @@ export default function Home() {
         mb={4}
         maxH="100vh"
         overflowY="auto"
+        
       >
         {!user ? (
           <>

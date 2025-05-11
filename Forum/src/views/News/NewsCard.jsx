@@ -10,7 +10,7 @@ function NewsCard({ title, summary, imageUrl }) {
   const {user} = useContext(AppContext)
 
     return (
-      <div className="news-card" style={{border: '1px solid black'}}>
+      <div className="news-card" style={{border: '1.5px solid black', backgroundColor: '#FFF9E6'}}>
         <img
           src={imageUrl}
           alt={title}
@@ -24,6 +24,11 @@ function NewsCard({ title, summary, imageUrl }) {
         <HStack>
           <Button style={{ backgroundColor: '#929292' , padding: '15px'}}>Login</Button>
         </HStack>
+        </Link>
+        <Link to='/register'>
+          <HStack>
+            <Button style={{ backgroundColor: '#929292' , padding: '15px'}}>Register</Button>
+          </HStack>
         </Link>
         </div> :
         <div className='create-post-option'>
