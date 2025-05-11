@@ -2,10 +2,9 @@ import { push, ref, set, get, query, orderByChild, equalTo } from "firebase/data
 import { useState, useEffect, useContext } from "react";
 import { db } from '../../config/firebase-config';
 import { AppContext } from "../../state/app.context";
-import Comments from "../../views/Comments/Comments";
 import PostList from "./Components Post/PostList";
 import CreatePostForm from "./Components Post/CreatePost";
-import { getUserData } from "../../services/users.service";
+import { getAllPosts } from "../../services/posts.service";
 import moment from 'moment';
 
 export default function Posts() {
@@ -18,26 +17,26 @@ export default function Posts() {
         content: '',
     });
 
-    const getUserPosts = async (uid) => {
-        try {
-            const snapshot = await get(query(ref(db, 'posts'), orderByChild('authorUid'), equalTo(uid)));
+    // const getUserPosts = async (uid) => {
+    //     try {
+    //         const snapshot = await get(query(ref(db, 'posts'), orderByChild('authorUid'), equalTo(uid)));
 
-            if (!snapshot.exists()) {
-                console.log("No posts found");
-                return {};
-            }
+    //         if (!snapshot.exists()) {
+    //             console.log("No posts found");
+    //             return {};
+    //         }
 
-            console.log("Posts found:", snapshot.val());
-            return snapshot.val();
-        } catch (error) {
-            console.error("Error fetching posts:", error);
-            return {};
-        }
-    };
+    //         console.log("Posts found:", snapshot.val());
+    //         return snapshot.val();
+    //     } catch (error) {
+    //         console.error("Error fetching posts:", error);
+    //         return {};
+    //     }
+    // };
 
     const createPost = async (title, content, authorHandle, authorUid) => {
 
-        const userData = await getUserData(authorUid);
+        const userData = await getAllPosts(authorUid);
         const user = Object.values(userData)[0]; 
 
         if (user?.isBlocked) {
@@ -57,7 +56,7 @@ export default function Posts() {
 
             await set(newPostRef, post);
 
-            const posts = await getUserPosts(authorUid);
+            const posts = await getAllPosts();
             setUserPosts(posts);
         } catch (error) {
             console.error("Error creating post:", error);
@@ -80,16 +79,14 @@ export default function Posts() {
         }
     };
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            if (!userData || !userData.uid) return;
+  useEffect(() => {
+    const fetchPosts = async () => {
+        const posts = await getAllPosts();
+        setUserPosts(posts);
+    };
 
-            const posts = await getUserPosts(userData.uid);
-            setUserPosts(posts);
-        };
-
-        fetchPosts();
-    }, [userData]);
+    fetchPosts();
+}, []);
 
     return (
         <div>
@@ -103,7 +100,7 @@ export default function Posts() {
                 />
             )}
 
-            {userPosts && Object.entries(userPosts).length > 0 ? (
+            {userPosts && Object.entries(userPosts).length > 0 && (
                 Object.entries(userPosts).map(([postId, post]) => (
                     <div key={postId}>
                         <PostList
@@ -115,9 +112,7 @@ export default function Posts() {
                         />
                     </div>
                 ))
-            ) : (
-                <p>No posts yet.</p>
-            )}
+            ) }
         </div>
     );
 

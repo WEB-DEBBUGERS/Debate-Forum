@@ -38,7 +38,7 @@ export default function Comments({ postId, userData }) {
         }
     };
 
-
+   
     useEffect(() => {
         const commentsQuery = query(ref(db, 'comments'), orderByChild('postId'), equalTo(postId));
         const repliesQuery = query(ref(db, 'replies'), orderByChild('postId'), equalTo(postId));
@@ -104,8 +104,9 @@ export default function Comments({ postId, userData }) {
                                     value={replyContent}
                                     onChange={(e) => setReplyContent(e.target.value)}
                                     placeholder="Write a reply..."
+                                    style={{color: 'white'}}
                                 />
-                                <button type="submit">Add Reply</button>
+                                <button type="submit">↩️</button>
                             </form>
                         )}
 

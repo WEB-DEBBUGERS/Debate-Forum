@@ -3,15 +3,13 @@ import { useContext } from "react";
 import { AppContext } from "../../state/app.context";
 import Navbar from "../../NavBar/Navbar";
 import { useNavigate } from "react-router-dom";
-import Posts from "../Posts/Posts"
-
+import Posts from "../Posts/Posts";
+import TrendingNewsPosts from "../Posts/Components Post/TrendingNewsPosts";
+import { Grid, Box } from "@chakra-ui/react";
 
 export default function Home() {
   const { user, userData } = useContext(AppContext);
   const navigate = useNavigate();
-
-
-
 
   return (
     <>
@@ -24,12 +22,16 @@ export default function Home() {
         ) : (
           <>
             {userData?.isAdmin && (
-              <button onClick={() => navigate("/admin")}>
-                Admin Panel
-              </button>
+              <button onClick={() => navigate("/admin")}>Admin Panel</button>
             )}
-
-            <Posts />
+            <Grid templateColumns="1fr 1fr" gap={4}>
+              <Box>
+                <Posts />
+              </Box>
+              <Box>
+                <TrendingNewsPosts />
+              </Box>
+            </Grid>
           </>
         )}
       </div>
