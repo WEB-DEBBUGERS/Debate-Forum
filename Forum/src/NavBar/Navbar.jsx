@@ -22,6 +22,10 @@ function Navbar() {
   return (
     <Flex as="nav" bg="gray.800" color="white" padding="1.5rem" align="center">
       <Box
+        className="logo"
+        onClick={() => {
+          navigate("/");
+        }}
         fontWeight="bold"
         fontSize="4xl"
         fontFamily="'Bebas Neue', sans-serif"
