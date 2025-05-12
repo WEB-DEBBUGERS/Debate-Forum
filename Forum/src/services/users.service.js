@@ -29,3 +29,14 @@ export const getUserData = async (uid) => {
 
     return snapshot.val();
 };
+
+
+export const getAllUsers = async () => {
+
+    const snapshot = await get(ref(db, `users`));
+    if (snapshot.exists()) {
+        return snapshot.val();
+    } else {
+        return null;
+    }
+};

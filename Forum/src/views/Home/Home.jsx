@@ -5,6 +5,7 @@ import Navbar from "../../NavBar/Navbar";
 import { useNavigate } from "react-router-dom";
 import Posts from "../Posts/Posts";
 import { Grid, Box } from "@chakra-ui/react";
+import StatusBar from "../../StatusBar/StatusBar";
 
 export default function Home() {
   const { user, userData } = useContext(AppContext);
@@ -31,6 +32,7 @@ export default function Home() {
         {!user ? (
           <>
             <NewsFeed />
+            <StatusBar/>
             <Posts />
           </>
         ) : (
