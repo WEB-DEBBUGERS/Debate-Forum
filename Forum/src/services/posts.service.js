@@ -1,9 +1,5 @@
-import { get, ref } from "firebase/database";
+import { get, ref, update } from "firebase/database";
 import { db } from "../config/firebase-config";
-// export const getUserPosts = async (uid) => {
-//     const snapshot = await get(query(ref(db, 'posts'), orderByChild('authorUid'), equalTo(uid)));
-//     return snapshot.exists() ? snapshot.val() : {};
-// }
 
 export const getAllPosts = async () => {
   try {
@@ -33,4 +29,23 @@ export const getAllReplies = async () => {
     console.error("Error fetching posts:", error);
     return {};
   }
+};
+
+export const likeOrDislikePost = async (postId, userId, type) => {
+  const postRef = ref(db, `posts/${postId}`);
+  const postSnap = await get(postRef);
+  if (!postSnap.exists()) return;
+  const post = postSnap.val();
+  const likes = Array.isArray(post.likes) ? [...post.likes] : [];
+  const dislikes = Array.isArray(post.dislikes) ? [...post.dislikes] : [];
+
+  const newLikes = likes.filter((id) => id !== userId);
+  const newDislikes = dislikes.filter((id) => id !== userId);
+
+  if (type === "like") {
+    newLikes.push(userId);
+  } else if (type === "dislike") {
+    newDislikes.push(userId);
+  }
+  await update(postRef, { likes: newLikes, dislikes: newDislikes });
 };
