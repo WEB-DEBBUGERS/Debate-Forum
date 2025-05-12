@@ -9,9 +9,10 @@ import Authenticated from "./Authenticated/Authenticated";
 import { useEffect, useState } from "react";
 import { AppContext } from "./state/app.context";
 import Home from "./views/Home/Home";
-import { Admin } from './Admin/Admin';
+import { Admin } from "./Admin/Admin";
 import { getAdminData } from "./Admin/Admins";
 import CreatePostPage from "./views/Posts/Components Post/CreatePostPage";
+import Profile from "./Components/Profile";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -23,24 +24,24 @@ function App() {
 
   useEffect(() => {
     if (!user) return;
-  
+
     setAppState((prev) => ({
       ...prev,
-      user, 
+      user,
     }));
-  
+
     getUserData(user.uid)
       .then(async (data) => {
         if (!data || Object.keys(data).length === 0) {
           console.log("No user data returned");
           return;
         }
-  
+
         const userData = data[Object.keys(data)[0]];
         const adminData = await getAdminData(user.uid);
-  
+
         const isAdmin = adminData ? adminData.isAdmin : false;
-  
+
         setAppState((prev) => ({
           ...prev,
           userData: {
@@ -67,13 +68,27 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AppContext.Provider value={{ user: appState.user, userData: appState.userData, setAppState }}>
+      <AppContext.Provider
+        value={{
+          user: appState.user,
+          userData: appState.userData,
+          setAppState,
+        }}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path='/admin' element={<Authenticated><Admin /></Authenticated>} />
-          <Route path='/create-post' element={<CreatePostPage/>}/>
+          <Route
+            path="/admin"
+            element={
+              <Authenticated>
+                <Admin />
+              </Authenticated>
+            }
+          />
+          <Route path="/create-post" element={<CreatePostPage />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </AppContext.Provider>
     </BrowserRouter>

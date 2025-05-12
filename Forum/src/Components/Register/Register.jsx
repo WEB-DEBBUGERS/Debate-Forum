@@ -15,14 +15,22 @@ export default function Register() {
     handle: "",
     email: "",
     password: "",
+    firstName: "",
+    lastName: "",
   });
 
   const { setAppState } = useContext(AppContext);
   const navigate = useNavigate();
 
   const register = () => {
-    if (!user.email || !user.password || !user.handle) {
-      return alert("Please enter valid credentials.");
+    if (
+      !user.email ||
+      !user.password ||
+      !user.handle ||
+      !user.firstName ||
+      !user.lastName
+    ) {
+      return alert("Please enter all required fields.");
     }
 
     getUserByHandle(user.handle)
@@ -38,11 +46,15 @@ export default function Register() {
         return createUserHandle(
           user.handle,
           credentials.user.uid,
-          user.email
+          user.email,
+          user.firstName,
+          user.lastName
         ).then(() => {
           setAppState({
             user: credentials.user,
             userData: null,
+            firstName: user.firstName,
+            lastName: user.lastName,
           });
 
           navigate("/");
@@ -77,6 +89,30 @@ export default function Register() {
               id="handle"
               name="handle"
               placeholder="Choose a unique handle"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="firstName">First Name</label>
+            <input
+              value={user.firstName}
+              onChange={updateUser("firstName")}
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="Enter your first name"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="lastName">Last Name</label>
+            <input
+              value={user.lastName}
+              onChange={updateUser("lastName")}
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Enter your last name"
             />
           </div>
 

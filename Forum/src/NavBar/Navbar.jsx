@@ -21,7 +21,11 @@ function Navbar() {
 
   return (
     <Flex as="nav" bg="gray.800" color="white" padding="1.5rem" align="center">
-      <Box fontWeight="bold" fontSize="4xl" fontFamily="'Bebas Neue', sans-serif" >
+      <Box
+        fontWeight="bold"
+        fontSize="4xl"
+        fontFamily="'Bebas Neue', sans-serif"
+      >
         DEBATABLE
       </Box>
 
@@ -61,6 +65,22 @@ function Navbar() {
               _hover={{ color: "teal.300" }}
             >
               Logout
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => navigate("/profile")}
+              aria-label="User Profile"
+              style={{
+                borderRadius: "50%",
+                padding: 0,
+                width: 40,
+                height: 40,
+                marginLeft: 8,
+              }}
+            >
+              <span role="img" aria-label="user" style={{ fontSize: 24 }}>
+                👤
+              </span>
             </Button>
           </>
         )}
