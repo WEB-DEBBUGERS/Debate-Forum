@@ -43,41 +43,47 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <>
       <Navbar />
       <div className="login-wrapper">
         <div className="login-box">
           <h2 className="login-title">Login</h2>
-
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              value={user.email}
-              onChange={updateUser("email")}
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              value={user.password}
-              onChange={updateUser("password")}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button onClick={login} className="login-btn">
-            Login
-          </button>
+          <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                login();
+              }}
+            >
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  value={user.email}
+                  onChange={updateUser("email")}
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  value={user.password}
+                  onChange={updateUser("password")}
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                />
+              </div>
+              <button type="submit" className="login-btn">
+                Login
+              </button>
+            </form>
+          </>
         </div>
       </div>
-    </div>
+    </>
   );
 }

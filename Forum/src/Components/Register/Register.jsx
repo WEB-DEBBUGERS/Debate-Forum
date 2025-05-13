@@ -74,77 +74,83 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <>
       <Navbar />
       <div className="register-wrapper">
         <div className="register-box">
           <h2 className="register-title">Register</h2>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              register();
+            }}
+          >
+            <div className="form-group">
+              <label htmlFor="handle">Username</label>
+              <input
+                value={user.handle}
+                onChange={updateUser("handle")}
+                type="text"
+                id="handle"
+                name="handle"
+                placeholder="Choose a unique handle"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="handle">Username</label>
-            <input
-              value={user.handle}
-              onChange={updateUser("handle")}
-              type="text"
-              id="handle"
-              name="handle"
-              placeholder="Choose a unique handle"
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="firstName">First Name</label>
+              <input
+                value={user.firstName}
+                onChange={updateUser("firstName")}
+                type="text"
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your first name"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="firstName">First Name</label>
-            <input
-              value={user.firstName}
-              onChange={updateUser("firstName")}
-              type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="Enter your first name"
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                value={user.lastName}
+                onChange={updateUser("lastName")}
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your last name"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              value={user.lastName}
-              onChange={updateUser("lastName")}
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Enter your last name"
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
+              <input
+                value={user.email}
+                onChange={updateUser("email")}
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              value={user.email}
-              onChange={updateUser("email")}
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-            />
-          </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                value={user.password}
+                onChange={updateUser("password")}
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Create a strong password"
+              />
+            </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              value={user.password}
-              onChange={updateUser("password")}
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Create a strong password"
-            />
-          </div>
-
-          <button onClick={register} className="register-btn">
-            Register
-          </button>
+            <button type="submit" className="register-btn">
+              Register
+            </button>
+          </form>
         </div>
       </div>
-    </div>
+    </>
   );
 }
