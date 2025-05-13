@@ -1,4 +1,4 @@
-import { get, ref, update } from "firebase/database";
+import { get, ref, update, remove } from "firebase/database";
 import { db } from "../config/firebase-config";
 
 export const getAllPosts = async () => {
@@ -50,12 +50,7 @@ export const likeOrDislikePost = async (postId, userId, type) => {
   await update(postRef, { likes: newLikes, dislikes: newDislikes });
 };
 
-export async function updatePost(postId, updatedData) {
+export const deletePost = async (postId) => {
   const postRef = ref(db, `posts/${postId}`);
-  try {
-    await update(postRef, updatedData);
-  } catch (error) {
-    console.error("Error updating post:", error);
-    throw error;
-  }
-}
+  await remove(postRef);
+};
