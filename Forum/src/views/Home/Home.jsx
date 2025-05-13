@@ -17,6 +17,7 @@ export default function Home() {
         <Navbar />
       </Box>
       <Box
+        className="home-bg"
         marginTop="20px"
         borderWidth="1px"
         borderRadius="md"

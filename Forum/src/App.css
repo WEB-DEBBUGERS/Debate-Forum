@@ -2,47 +2,91 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #afafaf91;
-  height: 100%;
-  width: 100%;
+  background: linear-gradient(135deg, #181a1b 0%, #232526 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  color: #e3e8ef;
 }
 
 .logo:hover {
   cursor: pointer;
 }
 
-.edit-post-btn {
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 16px;
-  margin-top: 10px;
-  margin-left: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-
-.edit-post-btn:hover {
-  background: #004ba0;
-}
-
+/* Neon glass buttons */
+.register-btn,
+.login-btn,
+.edit-post-btn,
 .delete-post-btn {
-  background: #ff5252;
+  background: linear-gradient(90deg, #00e6ff 0%, #0072ff 100%);
   color: #fff;
   border: none;
-  border-radius: 4px;
-  padding: 6px 16px;
+  border-radius: 8px;
+  padding: 10px 28px;
+  font-weight: bold;
+  font-size: 1.1rem;
   margin-top: 10px;
   margin-left: 4px;
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
+  box-shadow: 0 0 12px #00e6ff99, 0 0 24px #0072ff44;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
 }
 
+.register-btn:hover,
+.login-btn:hover,
+.edit-post-btn:hover,
 .delete-post-btn:hover {
-  background: #c62828;
+  background: linear-gradient(90deg, #00fff7 0%, #00e6ff 100%);
+  box-shadow: 0 0 24px #00fff7cc, 0 0 48px #00e6ff77;
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Like/Dislike neon buttons */
+.like-btn,
+.dislike-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-left: 0;
+  margin-right: 0;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00e6ff55;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.like-btn {
+  background: linear-gradient(90deg, #00e6ff 0%, #00ffb3 100%);
+  color: #222;
+}
+
+.like-btn.selected,
+.like-btn:active {
+  box-shadow: 0 0 0 2px #00e6ff, 0 0 16px #00e6ff;
+  background: linear-gradient(90deg, #00fff7 0%, #00e6ff 100%);
+}
+
+.like-btn:hover {
+  background: linear-gradient(90deg, #00fff7 0%, #00e6ff 100%);
+  box-shadow: 0 0 16px #00fff7cc;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.dislike-btn {
+  background: linear-gradient(90deg, #ffb3b3 0%, #ff5252 100%);
+  color: #222;
+}
+
+.dislike-btn.selected,
+.dislike-btn:active {
+  box-shadow: 0 0 0 2px #ff5252, 0 0 16px #ff5252;
+  background: linear-gradient(90deg, #ffcdd2 0%, #ff5252 100%);
+}
+
+.dislike-btn:hover {
+  background: linear-gradient(90deg, #ffcdd2 0%, #ff5252 100%);
+  box-shadow: 0 0 16px #ff5252cc;
+  transform: translateY(-2px) scale(1.04);
 }
 
 .like-dislike-group {
@@ -56,58 +100,145 @@ body {
   margin: 0;
 }
 
-.post-box {
+/* Glassmorphism card style */
+.post-box,
+.register-box,
+.login-box,
+.profile-box {
+  background: rgba(24, 26, 27, 0.75);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+  padding: 2.5rem 2.5rem 4.5rem 2.5rem;
+  margin: 2rem auto 2.5rem auto;
+  max-width: 700px;
+  color: #f5f7fa;
   position: relative;
-  margin-left: 20px;
-  margin-top: 20px;
-  border-width: 1px;
+}
+
+/* Glassmorphism and dark style for create post form */
+.create-post-form-glass {
+  background: rgba(24, 26, 27, 0.85);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+  padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+  margin: 2rem auto 2.5rem auto;
+  max-width: 700px;
+  color: #f3f6fb;
+}
+
+/* Neon effect for titles */
+.register-title,
+.login-title,
+.profile-title,
+.post-title,
+.navbar-title {
+  color: #e3e8ef;
+  text-shadow: 0 0 4px #00e6ff, 0 0 8px #00e6ff;
+  font-family: 'Orbitron', 'Segoe UI', 'Arial', sans-serif;
+  letter-spacing: 2px;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Neon effect for post title, description, show comments, and comments */
+.post-title,
+.post-content,
+.show-comments-btn,
+.comment-text,
+.comment-content {
+  color: #00e6ff !important;
+  text-shadow: 0 0 4px #00e6ff, 0 0 8px #00e6ff;
+  font-family: 'Orbitron', 'Segoe UI', 'Arial', sans-serif;
+}
+
+/* Comments color override - lighter gray */
+.comment-text,
+.comment-content {
+  color: #e3e8ef !important;
+  text-shadow: none;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
+/* Neon border for input fields */
+input,
+textarea {
+  background: rgba(40, 44, 52, 0.85);
+  border: 1.5px solid #00e6ff;
   border-radius: 8px;
-  padding: 24px 24px 48px 24px;
-  box-shadow: 0 2px 8px #0001;
-  background: #FFF9E6;
-  margin-bottom: 24px;
+  color: #e3e8ef;
+  padding: 10px 14px;
+  margin-bottom: 1rem;
+  outline: none;
+  font-size: 1rem;
+  box-shadow: 0 0 8px #00e6ff33;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-.like-btn {
-  background: #e0f7fa;
-  color: #00796b;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: none;
+input:focus,
+textarea:focus {
+  border: 1.5px solid #00fff7;
+  box-shadow: 0 0 16px #00fff7cc;
+  background: rgba(40, 44, 52, 1);
 }
 
-.like-btn.selected,
-.like-btn:active {
-  box-shadow: 0 0 0 2px #00796b;
-  background: #b2ebf2;
+/* All Posts page darker background and lighter font color */
+.all-posts-bg {
+  background: #111214 !important;
+  min-height: 100vh;
+  color: #f3f6fb !important;
 }
 
-.like-btn:hover {
-  background: #b2ebf2;
+.all-posts-bg .post-box {
+  background: rgba(20, 22, 24, 0.88);
+  color: #f3f6fb;
 }
 
-.dislike-btn {
-  background: #ffebee;
-  color: #c62828;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: none;
+.all-posts-bg .post-title,
+.all-posts-bg .post-content,
+.all-posts-bg .post-author,
+.all-posts-bg .post-date {
+  color: #f3f6fb !important;
 }
 
-.dislike-btn.selected,
-.dislike-btn:active {
-  box-shadow: 0 0 0 2px #c62828;
-  background: #ffcdd2;
+.all-posts-bg .like-btn,
+.all-posts-bg .dislike-btn {
+  color: #181a1b;
 }
 
-.dislike-btn:hover {
-  background: #ffcdd2;
+/* Home page dark background */
+.home-bg {
+  background: #111214 !important;
+  min-height: 100vh;
+  color: #f3f6fb !important;
+}
+
+/* Profile page dark background */
+.profile-bg {
+  background: #111214 !important;
+  min-height: 100vh;
+  color: #f3f6fb !important;
+}
+
+/* Make post content and meta even lighter for readability */
+.post-title,
+.post-content,
+.post-meta,
+.post-author {
+  color: #f8fbff;
+}
+
+/* Optional: lighten comment text if present */
+.comment-text {
+  color: #f3f6fa;
+}
+
+/* Set font color for <small> tags */
+small {
+  color: #e3e8ef !important;
 }

@@ -126,10 +126,10 @@ function PostList({ posts }) {
             </>
           ) : (
             <>
-              <Heading color="black" size="md" mb={2}>
+              <Heading className="post-title" size="md" mb={2}>
                 {post.title}
               </Heading>
-              <Text color="black" mb={2}>
+              <Text className="post-content" mb={2}>
                 {post.content}
               </Text>
             </>
@@ -181,7 +181,13 @@ function PostList({ posts }) {
           {user && (
             <>
               <button
-                style={{ color: "black", marginTop: "10px" }}
+                className="show-comments-btn"
+                style={{
+                  color: "#00e6ff",
+                  marginTop: "10px",
+                  textShadow:
+                    "0 0 8px #00e6ff, 0 0 16px #00e6ff, 0 0 32px #00e6ff",
+                }}
                 onClick={() =>
                   setVisibleComments((prev) => ({
                     ...prev,
@@ -198,7 +204,7 @@ function PostList({ posts }) {
                   padding="10px"
                   marginTop="10px"
                 >
-                  <Comments postId={postId} userData={userData} />
+                  <Comments postId={postId} userData={userData} neon={true} />
                 </Box>
               )}
             </>

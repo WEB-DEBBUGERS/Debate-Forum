@@ -35,7 +35,7 @@ export default function Profile() {
   return (
     <>
       <Navbar />
-      <div className="register-wrapper">
+      <div className="register-wrapper profile-bg">
         <div
           className="register-box"
           style={{ maxWidth: 400, margin: "2rem auto" }}
