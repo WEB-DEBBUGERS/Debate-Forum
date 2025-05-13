@@ -10,3 +10,104 @@ body {
 .logo:hover {
   cursor: pointer;
 }
+
+.edit-post-btn {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  margin-top: 10px;
+  margin-left: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.edit-post-btn:hover {
+  background: #004ba0;
+}
+
+.delete-post-btn {
+  background: #ff5252;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  margin-top: 10px;
+  margin-left: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.delete-post-btn:hover {
+  background: #c62828;
+}
+
+.like-dislike-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
+  margin: 0;
+}
+
+.post-box {
+  position: relative;
+  margin-left: 20px;
+  margin-top: 20px;
+  border-width: 1px;
+  border-radius: 8px;
+  padding: 24px 24px 48px 24px;
+  box-shadow: 0 2px 8px #0001;
+  background: #FFF9E6;
+  margin-bottom: 24px;
+}
+
+.like-btn {
+  background: #e0f7fa;
+  color: #00796b;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+}
+
+.like-btn.selected,
+.like-btn:active {
+  box-shadow: 0 0 0 2px #00796b;
+  background: #b2ebf2;
+}
+
+.like-btn:hover {
+  background: #b2ebf2;
+}
+
+.dislike-btn {
+  background: #ffebee;
+  color: #c62828;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+}
+
+.dislike-btn.selected,
+.dislike-btn:active {
+  box-shadow: 0 0 0 2px #c62828;
+  background: #ffcdd2;
+}
+
+.dislike-btn:hover {
+  background: #ffcdd2;
+}
