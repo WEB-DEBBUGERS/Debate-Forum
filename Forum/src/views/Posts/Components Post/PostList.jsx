@@ -2,13 +2,15 @@ import { Box, Text, Heading } from "@chakra-ui/react";
 import Comments from "../../Comments/Comments";
 import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../../state/app.context";
-import { likeOrDislikePost } from "../../../services/posts.service";
+import { likeOrDislikePost, updatePost } from "../../../services/posts.service";
 
 function PostList({ posts }) {
   const { user, userData } = useContext(AppContext);
   const [visibleComments, setVisibleComments] = useState({});
   const [voted, setVoted] = useState({});
   const [postState, setPostState] = useState(posts);
+  const [editMode, setEditMode] = useState({});
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     setPostState(posts);
@@ -37,6 +39,28 @@ function PostList({ posts }) {
     setVoted((prev) => ({ ...prev, [postId]: true }));
   };
 
+  const handleEditToggle = (postId, post) => {
+    setEditMode((prev) => ({ ...prev, [postId]: !prev[postId] }));
+    
+    if (!editMode[postId]) {
+      setEditData({ title: post.title, content: post.content });
+    }
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleUpdate = async (postId) => {
+    await updatePost(postId, editData);
+    setPostState((prev) => ({
+      ...prev,
+      [postId]: { ...prev[postId], ...editData },
+    }));
+    setEditMode((prev) => ({ ...prev, [postId]: false }));
+  };
+
   return (
     <>
       {Object.entries(postState).map(([postId, post]) => (
@@ -52,15 +76,63 @@ function PostList({ posts }) {
           mb={4}
           bg="#FFF9E6"
         >
-          <Heading color="black" size="md" mb={2}>
-            {post.title}
-          </Heading>
-          <Text color="black" mb={2}>
-            {post.content}
-          </Text>
+          {editMode[postId] ? (
+            <>
+              <input
+                name="title"
+                value={editData.title}
+                onChange={handleEditChange}
+                style={{ marginBottom: 8, display: "block", width: "100%" }}
+              />
+              <textarea
+                name="content"
+                value={editData.content}
+                onChange={handleEditChange}
+                style={{ marginBottom: 8, display: "block", width: "100%" }}
+              />
+              <button
+                onClick={() => handleUpdate(postId)}
+                style={{
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  border: "none",
+                  cursor: "pointer",
+                  marginRight: 4,
+                }}
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditMode((prev) => ({ ...prev, [postId]: false }))}
+                style={{
+                  backgroundColor: "#f44336",
+                  color: "white",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <Heading color="black" size="md" mb={2}>
+                {post.title}
+              </Heading>
+              <Text color="black" mb={2}>
+                {post.content}
+              </Text>
+            </>
+          )}
+
           <Text fontSize="sm" color="gray.500">
             By {post.authorHandle} on {post.createdOn}
           </Text>
+
           {user && (
             <div style={{ display: "flex", gap: 12, margin: "10px 0" }}>
               <button
@@ -102,8 +174,17 @@ function PostList({ posts }) {
               >
                 👎 Dislike ({post.dislikes ? post.dislikes.length : 0})
               </button>
+              {post.authorUid === user.uid && (
+                <button
+                  style={{ color: "black" }}
+                  onClick={() => handleEditToggle(postId, post)}
+                >
+                  {editMode[postId] ? "Cancel" : "Edit"}
+                </button>
+              )}
             </div>
           )}
+
           {user && (
             <>
               <button

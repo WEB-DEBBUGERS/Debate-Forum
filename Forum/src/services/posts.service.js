@@ -49,3 +49,13 @@ export const likeOrDislikePost = async (postId, userId, type) => {
   }
   await update(postRef, { likes: newLikes, dislikes: newDislikes });
 };
+
+export async function updatePost(postId, updatedData) {
+  const postRef = ref(db, `posts/${postId}`);
+  try {
+    await update(postRef, updatedData);
+  } catch (error) {
+    console.error("Error updating post:", error);
+    throw error;
+  }
+}
