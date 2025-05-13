@@ -187,6 +187,16 @@ textarea:focus {
   background: rgba(40, 44, 52, 1);
 }
 
+/* Register input style */
+.register-input {
+  background: #232526 !important;
+  color: #e3e8ef !important;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1rem;
+}
+
 /* All Posts page darker background and lighter font color */
 .all-posts-bg {
   background: #111214 !important;
