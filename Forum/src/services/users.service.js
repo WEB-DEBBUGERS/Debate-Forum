@@ -1,5 +1,6 @@
-import { get, set, ref, query, equalTo, orderByChild, update } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, update, remove } from "firebase/database";
 import { db } from "../config/firebase-config";
+import { getAllPosts } from "./posts.service";
 
 export const getUserByHandle = async (handle) => {
   const snapshot = await get(ref(db, `users/${handle}`));
@@ -128,4 +129,49 @@ export const getUserFavorites = async (uid) => {
   const userRef = ref(db, `users/${userKey}/favorites`);
   const favSnap = await get(userRef);
   return favSnap.exists() ? favSnap.val() : [];
+};
+
+export const deleteUserAndPosts = async (uid) => {
+  // 1. Find the user's handle and user node
+  const userSnapshot = await get(
+    query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
+  );
+  if (!userSnapshot.exists()) return;
+  const userKey = Object.keys(userSnapshot.val())[0];
+  const userRef = ref(db, `users/${userKey}`);
+
+  // 2. Delete all posts by this user
+  const posts = await getAllPosts();
+  if (posts) {
+    for (const [postId, post] of Object.entries(posts)) {
+      if (post.authorUid === uid) {
+        await remove(ref(db, `posts/${postId}`));
+      }
+    }
+  }
+
+  // 3. Delete all comments by this user
+  const commentsSnap = await get(ref(db, 'comments'));
+  if (commentsSnap.exists()) {
+    const comments = commentsSnap.val();
+    for (const [commentId, comment] of Object.entries(comments)) {
+      if (comment.authorUid === uid) {
+        await remove(ref(db, `comments/${commentId}`));
+      }
+    }
+  }
+
+  // 4. Delete all replies by this user
+  const repliesSnap = await get(ref(db, 'replies'));
+  if (repliesSnap.exists()) {
+    const replies = repliesSnap.val();
+    for (const [replyId, reply] of Object.entries(replies)) {
+      if (reply.authorUid === uid) {
+        await remove(ref(db, `replies/${replyId}`));
+      }
+    }
+  }
+
+  // 5. Delete the user profile
+  await remove(userRef);
 };
