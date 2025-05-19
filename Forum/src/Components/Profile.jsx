@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../state/app.context";
 import { updateUserProfile, getUserData } from "../services/users.service";
 import Navbar from "../NavBar/Navbar";
@@ -13,7 +13,17 @@ export default function Profile() {
     email: userData?.email || user?.email || "",
   });
   const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(userData?.avatarUrl || null);
+  const [avatarPreview, setAvatarPreview] = useState(userData?.avatarBase64 || null);
+
+  // Always sync form state with userData (fixes bug where changes are lost after navigation)
+  useEffect(() => {
+    setForm({
+      firstName: userData?.firstName || "",
+      lastName: userData?.lastName || "",
+      email: userData?.email || user?.email || "",
+    });
+    setAvatarPreview(userData?.avatarBase64 || null);
+  }, [userData]);
 
   if (!user) return <div>Please log in to view your profile.</div>;
 
@@ -35,7 +45,7 @@ export default function Profile() {
 
   const handleSave = async () => {
     // avatarFile is now a base64 string (or null)
-    await updateUserProfile(user.uid, form.firstName, form.lastName, avatarFile);
+    await updateUserProfile(user.uid, form.firstName, form.lastName, avatarFile || avatarPreview);
     const updatedData = await getUserData(user.uid);
     const userData2 = updatedData
       ? updatedData[Object.keys(updatedData)[0]]
@@ -115,8 +125,8 @@ export default function Profile() {
           ) : (
             <>
               <div style={{ textAlign: 'center', marginBottom: 16 }}>
-                {userData?.avatarUrl && (
-                  <img src={userData.avatarUrl} alt="Avatar" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 0 12px #00e6ff' }} />
+                {userData?.avatarBase64 && (
+                  <img src={userData.avatarBase64} alt="Avatar" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 0 12px #00e6ff' }} />
                 )}
               </div>
               <div className="form-group">
@@ -129,7 +139,7 @@ export default function Profile() {
                     border: "1px solid #ccc",
                   }}
                 >
-                  {form.firstName}
+                  {userData?.firstName}
                 </div>
               </div>
               <div className="form-group">
@@ -142,7 +152,7 @@ export default function Profile() {
                     border: "1px solid #ccc",
                   }}
                 >
-                  {form.lastName}
+                  {userData?.lastName}
                 </div>
               </div>
               <div className="form-group">
@@ -155,7 +165,7 @@ export default function Profile() {
                     border: "1px solid #ccc",
                   }}
                 >
-                  {form.email}
+                  {userData?.email}
                 </div>
               </div>
               <button

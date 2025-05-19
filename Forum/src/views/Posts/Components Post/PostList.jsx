@@ -7,7 +7,7 @@ import {
   updatePost,
   deletePost,
 } from "../../../services/posts.service";
-import { toggleFavoritePost, getUserFavorites } from '../../../services/users.service';
+import { toggleFavoritePost, getUserFavorites, getAllUsers } from '../../../services/users.service';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
@@ -18,6 +18,7 @@ function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
   const [editMode, setEditMode] = useState({});
   const [editData, setEditData] = useState({});
   const [favorites, setFavorites] = useState([]);
+  const [userAvatars, setUserAvatars] = useState({});
 
   useEffect(() => {
     setPostState(posts);
@@ -32,6 +33,21 @@ function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
     }
     fetchFavorites();
   }, [user, posts]);
+
+  useEffect(() => {
+    async function fetchAvatars() {
+      const users = await getAllUsers();
+      if (users) {
+        // Map uid to avatarBase64
+        const avatarMap = {};
+        Object.values(users).forEach(user => {
+          if (user.uid) avatarMap[user.uid] = user.avatarBase64 || null;
+        });
+        setUserAvatars(avatarMap);
+      }
+    }
+    fetchAvatars();
+  }, []);
 
   const handleVote = async (postId, type) => {
     setPostState((prev) => {
@@ -124,6 +140,22 @@ function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
             </button>
           )}
 
+          {/* Author avatar and name */}
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+            {userAvatars[post.authorUid] ? (
+              <img
+                src={userAvatars[post.authorUid]}
+                alt="avatar"
+                style={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover', marginRight: 10, boxShadow: '0 0 8px #00e6ff' }}
+              />
+            ) : (
+              <span role="img" aria-label="user" style={{ fontSize: 28, marginRight: 10, color: '#00e6ff' }}>👤</span>
+            )}
+            <Text fontSize="sm" color="gray.500">
+              By {post.authorHandle} on {post.createdOn}
+            </Text>
+          </div>
+
           {editMode[postId] ? (
             <>
               <input
@@ -178,10 +210,6 @@ function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
               </Text>
             </>
           )}
-
-          <Text fontSize="sm" color="gray.500">
-            By {post.authorHandle} on {post.createdOn}
-          </Text>
 
           {user && (
             <div className="like-dislike-group">

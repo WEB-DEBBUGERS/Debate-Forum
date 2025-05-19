@@ -1,4 +1,4 @@
-import { get, set, ref, query, equalTo, orderByChild } from "firebase/database";
+import { get, set, ref, query, equalTo, orderByChild, update } from "firebase/database";
 import { db } from "../config/firebase-config";
 
 export const getUserByHandle = async (handle) => {
@@ -45,8 +45,8 @@ export const updateUserProfile = async (uid, firstName, lastName, avatarBase64) 
     const users = snapshot.val();
     const handle = Object.keys(users)[0];
     const userRef = ref(db, `users/${handle}`);
-    await set(userRef, {
-      ...users[handle],
+    // Only update the changed fields, do not overwrite the whole user object
+    await update(userRef, {
       firstName,
       lastName,
       avatarBase64: avatarBase64 || users[handle].avatarBase64 || null,
@@ -99,16 +99,24 @@ export const toggleFavoritePost = async (uid, postId) => {
   );
   if (!userSnapshot.exists()) return;
   const userKey = Object.keys(userSnapshot.val())[0];
-  const userRef = ref(db, `users/${userKey}/favorites`);
+  const userRef = ref(db, `users/${userKey}`);
+  const favRef = ref(db, `users/${userKey}/favorites`);
   let favorites = [];
-  const favSnap = await get(userRef);
-  if (favSnap.exists()) favorites = favSnap.val();
+  const favSnap = await get(favRef);
+  if (favSnap.exists() && Array.isArray(favSnap.val())) {
+    favorites = favSnap.val();
+  } else if (favSnap.exists() && typeof favSnap.val() === 'string') {
+    // If favorites is a string (corrupted), ignore it
+    favorites = [];
+  } else {
+    favorites = [];
+  }
   if (favorites.includes(postId)) {
     favorites = favorites.filter((id) => id !== postId);
   } else {
     favorites.push(postId);
   }
-  await set(userRef, favorites);
+  await update(userRef, { favorites });
 };
 
 export const getUserFavorites = async (uid) => {
