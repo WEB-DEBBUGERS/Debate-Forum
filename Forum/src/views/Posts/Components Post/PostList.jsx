@@ -7,18 +7,31 @@ import {
   updatePost,
   deletePost,
 } from "../../../services/posts.service";
+import { toggleFavoritePost, getUserFavorites } from '../../../services/users.service';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
-function PostList({ posts }) {
+function PostList({ posts, showOnlyFavorites, onFavoritesChanged }) {
   const { user, userData } = useContext(AppContext);
   const [visibleComments, setVisibleComments] = useState({});
   const [voted, setVoted] = useState({});
   const [postState, setPostState] = useState(posts);
   const [editMode, setEditMode] = useState({});
   const [editData, setEditData] = useState({});
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     setPostState(posts);
   }, [posts]);
+
+  useEffect(() => {
+    async function fetchFavorites() {
+      if (user) {
+        const favs = await getUserFavorites(user.uid);
+        setFavorites(favs || []);
+      }
+    }
+    fetchFavorites();
+  }, [user, posts]);
 
   const handleVote = async (postId, type) => {
     setPostState((prev) => {
@@ -76,10 +89,41 @@ function PostList({ posts }) {
     }
   };
 
+  const handleFavorite = async (postId) => {
+    if (!user) return;
+    await toggleFavoritePost(user.uid, postId);
+    const favs = await getUserFavorites(user.uid);
+    setFavorites(favs || []);
+    if (onFavoritesChanged) onFavoritesChanged();
+  };
+
   return (
     <>
       {Object.entries(postState).map(([postId, post]) => (
         <Box className="post-box" key={postId}>
+          {/* Heart icon for favorites */}
+          {user && (
+            <button
+              onClick={() => handleFavorite(postId)}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                position: 'absolute',
+                top: 18,
+                right: 18,
+                fontSize: 28,
+                color: favorites.includes(postId) ? '#00e6ff' : '#e3e8ef', // neon blue for filled
+                filter: favorites.includes(postId) ? 'drop-shadow(0 0 8px #00e6ff)' : 'none',
+                zIndex: 2,
+              }}
+              aria-label={favorites.includes(postId) ? 'Remove from favorites' : 'Add to favorites'}
+              title={favorites.includes(postId) ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              {favorites.includes(postId) ? <FaHeart /> : <FaRegHeart />}
+            </button>
+          )}
+
           {editMode[postId] ? (
             <>
               <input

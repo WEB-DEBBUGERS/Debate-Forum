@@ -13,6 +13,7 @@ import { Admin } from "./Admin/Admin";
 import { getAdminData } from "./Admin/Admins";
 import CreatePostPage from "./views/Posts/Components Post/CreatePostPage";
 import Profile from "./Components/Profile";
+import Favorites from "./views/Posts/Favorites";
 
 function App() {
   const [appState, setAppState] = useState({
@@ -89,6 +90,7 @@ function App() {
           />
           <Route path="/create-post" element={<CreatePostPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </AppContext.Provider>
     </BrowserRouter>

@@ -98,6 +98,14 @@ function Navbar() {
               >
                 Create Post
               </Link>
+              <Link
+                href="/favorites"
+                _hover={{ textDecoration: "none", color: "#00e6ff" }}
+                style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+              >
+                <span role="img" aria-label="favorites" style={{ fontSize: 22, color: '#00e6ff', filter: 'drop-shadow(0 0 8px #00e6ff)' }}>❤</span>
+                Favorites
+              </Link>
               <Button
                 variant="link"
                 onClick={logout}
