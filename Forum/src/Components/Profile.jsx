@@ -12,6 +12,8 @@ export default function Profile() {
     lastName: userData?.lastName || "",
     email: userData?.email || user?.email || "",
   });
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState(userData?.avatarUrl || null);
 
   if (!user) return <div>Please log in to view your profile.</div>;
 
@@ -19,17 +21,31 @@ export default function Profile() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new window.FileReader();
+      reader.onloadend = () => {
+        setAvatarFile(reader.result); // base64 string
+        setAvatarPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = async () => {
-    await updateUserProfile(user.uid, form.firstName, form.lastName);
+    // avatarFile is now a base64 string (or null)
+    await updateUserProfile(user.uid, form.firstName, form.lastName, avatarFile);
     const updatedData = await getUserData(user.uid);
-    const userData = updatedData
+    const userData2 = updatedData
       ? updatedData[Object.keys(updatedData)[0]]
       : null;
     setAppState((prev) => ({
       ...prev,
-      userData: userData,
+      userData: userData2,
     }));
     setEditMode(false);
+    setAvatarFile(null);
   };
 
   return (
@@ -43,6 +59,12 @@ export default function Profile() {
           <h2 className="register-title">Profile</h2>
           {editMode ? (
             <>
+              <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                <input type="file" accept="image/*" onChange={handleAvatarChange} />
+                {avatarPreview && (
+                  <img src={avatarPreview} alt="Avatar Preview" style={{ width: 80, height: 80, borderRadius: '50%', marginTop: 8, objectFit: 'cover', boxShadow: '0 0 12px #00e6ff' }} />
+                )}
+              </div>
               <div className="form-group">
                 <label>First Name:</label>
                 <input
@@ -92,6 +114,11 @@ export default function Profile() {
             </>
           ) : (
             <>
+              <div style={{ textAlign: 'center', marginBottom: 16 }}>
+                {userData?.avatarUrl && (
+                  <img src={userData.avatarUrl} alt="Avatar" style={{ width: 80, height: 80, borderRadius: '50%', objectFit: 'cover', boxShadow: '0 0 12px #00e6ff' }} />
+                )}
+              </div>
               <div className="form-group">
                 <label>First Name:</label>
                 <div

@@ -37,7 +37,7 @@ export const getUserData = async (uid) => {
   return snapshot.val();
 };
 
-export const updateUserProfile = async (uid, firstName, lastName) => {
+export const updateUserProfile = async (uid, firstName, lastName, avatarBase64) => {
   const snapshot = await get(
     query(ref(db, "users"), orderByChild("uid"), equalTo(uid))
   );
@@ -49,13 +49,8 @@ export const updateUserProfile = async (uid, firstName, lastName) => {
       ...users[handle],
       firstName,
       lastName,
+      avatarBase64: avatarBase64 || users[handle].avatarBase64 || null,
     });
-    // Also update the UID-indexed user if you have one (for consistency)
-    // await set(ref(db, `usersByUid/${uid}`), {
-    //   ...users[handle],
-    //   firstName,
-    //   lastName,
-    // });
   }
 };
 

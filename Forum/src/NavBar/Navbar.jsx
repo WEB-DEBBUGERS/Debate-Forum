@@ -6,7 +6,7 @@ import { logoutUser } from "../services/auth.service";
 import PostList from "../views/Posts/Components Post/PostList";
 
 function Navbar() {
-  const { user, setAppState } = useContext(AppContext);
+  const { user, userData, setAppState } = useContext(AppContext);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -123,11 +123,23 @@ function Navbar() {
                   width: 40,
                   height: 40,
                   marginLeft: 8,
+                  overflow: 'hidden',
+                  background: 'none',
+                  border: 'none',
+                  boxShadow: userData?.avatarBase64 ? '0 0 8px #00e6ff' : 'none',
                 }}
               >
-                <span role="img" aria-label="user" style={{ fontSize: 24 }}>
-                  👤
-                </span>
+                {userData?.avatarBase64 ? (
+                  <img
+                    src={userData.avatarBase64}
+                    alt="Avatar"
+                    style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <span role="img" aria-label="user" style={{ fontSize: 24 }}>
+                    👤
+                  </span>
+                )}
               </Button>
             </>
           )}
