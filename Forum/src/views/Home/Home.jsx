@@ -26,24 +26,32 @@ export default function Home() {
         boxShadow="sm"
         _hover={{ boxShadow: "md", bg: "white" }}
         mb={4}
-        maxH="100vh"
-        overflowY="auto"
+        overflowY="hidden"
+        minWidth={0} 
 
       >
         {!user ? (
           <>
-            <NewsFeed />
-            <StatusBar/>
-            <Posts />
+            <StatusBar />
+            <Grid templateColumns="1fr 1fr" gap={4}>
+              <Box>
+                <Posts />
+              </Box>
+              <Box width="100%" minW={0}>
+                <NewsFeed />
+              </Box>
+            </Grid>
           </>
         ) : (
           <>
             {userData?.isAdmin && (
-              <button onClick={() => navigate("/admin")} style={{ color: 'black',  backgroundColor: '#fff9c4', 
+              <button onClick={() => navigate("/admin")} style={{
+                color: 'black', backgroundColor: '#fff9c4',
                 padding: '8px 16px',
                 border: 'none',
                 borderRadius: '4px',
-                cursor: 'pointer' }}>
+                cursor: 'pointer'
+              }}>
                 Admin Panel
               </button>
             )}
