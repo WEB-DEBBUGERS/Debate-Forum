@@ -23,6 +23,11 @@ export default function Register() {
   const navigate = useNavigate();
 
   const register = () => {
+    // Username (handle) validation
+    if (user.handle.length < 4 || user.handle.length > 32) {
+      alert("Username must be between 4 and 32 characters long.");
+      return;
+    }
     if (
       !user.email ||
       !user.password ||
