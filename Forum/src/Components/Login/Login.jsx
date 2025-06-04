@@ -16,10 +16,6 @@ export default function Login() {
   const location = useLocation();
 
   const login = () => {
-    if (!user.email || !user.password) {
-      return alert("Please enter an email and password");
-    }
-
     loginUser(user.email, user.password)
       .then((credentials) => {
         setAppState({
